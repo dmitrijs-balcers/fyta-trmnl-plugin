@@ -1,5 +1,14 @@
 <!-- shared markup -->
 {% template metric %}
+<div style="display: inline-block; font-size: 3em">
+  <div style="display: inline-block">
+    <span class="text--center bg--gray-6" style="display: block; filter: grayscale(100%)">{{ icon }}</span>
+    {% render 'metricSvg', status: status %}
+  </div>
+</div>
+{% endtemplate %}
+
+{% template metricSvg %}
 <svg viewBox="0 0 32 54">
   {% for i in (0..5) %}
     <!-- Bar {{ i | plus: 1 }} -->
@@ -27,26 +36,9 @@
             alt="{{ flower.name }}"
             style="aspect-ratio: 1/1; object-fit: cover; border-radius: 1em; filter: grayscale(100%); vertical-align: top"
           >
-          {% comment %}<div style="display: inline-block; font-size: 2em">{% endcomment %}
-          <div style="display: inline-block; font-size: 3em">
-            <div style="display: inline-block">
-              <span class="text--center bg--gray-6" style="display: block; filter: grayscale(100%)">💧</span>
-              {% render 'metric', status: flower.moisture_status %}
-            </div>
-          </div>
-          <div style="display: inline-block; font-size: 3em">
-            <div style="display: inline-block">
-              <span class="text--center bg--gray-6" style="display: block; filter: grayscale(100%)">🌡</span>
-              {% render 'metric', status: flower.temperature_status %}
-            </div>
-          </div>
-          <div style="display: inline-block; font-size: 3em">
-            <div style="display: inline-block">
-              <span class="text--center bg--gray-6" style="display: block; filter: grayscale(100%)">☀️</span>
-              {% render 'metric', status: flower.light_status %}
-            </div>
-          </div>
-          {% comment %}</div>{% endcomment %}
+          {% render 'metric', status: flower.moisture_status, icon: '💧' %}
+          {% render 'metric', status: flower.temperature_status, icon: '🌡' %}
+          {% render 'metric', status: flower.light_status, icon: '☀️' %}
         </div>
       {% endfor %}
     </div>
