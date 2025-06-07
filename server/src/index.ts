@@ -5,9 +5,11 @@ import { fetchPlants } from "./fytaApi.js";
 const app = new Hono();
 
 app.get("/", async (c) => {
+  const plants = await fetchPlants();
+
   return c.json({
     ok: true,
-    ...(await fetchPlants()),
+    ...plants,
   });
 });
 
