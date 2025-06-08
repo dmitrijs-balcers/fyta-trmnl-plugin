@@ -10,15 +10,15 @@
 
 {% template metricSvg %}
 <svg viewBox="0 0 32 54">
-  {% for i in (0..5) %}
-    <!-- Bar {{ i | plus: 1 }} -->
+  {% for i in (1..5) %}
+    {% assign state = 6 | minus: i %}
     <rect
       x="0"
       y="{{ i | times: 9 }}"
       width="32"
       height="7"
       rx="5"
-      fill="{% if i == status %}black{% else %}darkGrey{% endif %}"
+      fill="{% if state == status %}black{% else %}darkGrey{% endif %}"
     />
   {% endfor %}
 </svg>
@@ -38,8 +38,8 @@
               style="aspect-ratio: 1/1; object-fit: cover; border-radius: 1em; filter: grayscale(100%); vertical-align: top"
             >
             {% render 'metric', status: flower.moisture_status, icon: '💧' %}
-            {% render 'metric', status: flower.temperature_status, icon: '🌡' %}
             {% render 'metric', status: flower.light_status, icon: '☀️' %}
+            {% render 'metric', status: flower.temperature_status, icon: '🌡' %}
           </div>
         </div>
       {% endfor %}
