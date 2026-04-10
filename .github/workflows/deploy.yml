@@ -1,0 +1,20 @@
+name: Deploy to TRMNL
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - ".trmnlp.yml"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    container:
+      image: trmnl/trmnlp
+    steps:
+      - uses: actions/checkout@v4
+      - name: Push to TRMNL
+        env:
+          TRMNL_API_KEY: ${{ secrets.TRMNL_API_KEY }}
+        run: trmnlp push --force --id 9f7971b0-25f1-4d75-b28f-64615607f2e3 --dir $GITHUB_WORKSPACE
