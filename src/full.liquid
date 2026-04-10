@@ -1,58 +1,55 @@
-<!-- shared markup -->
-{% template metric %}
-<div style="display: inline-block; font-size: 3em">
-  <div style="display: inline-block">
-    <span class="text--center bg--gray-6" style="display: block; filter: grayscale(100%)">{{ icon }}</span>
-    {% render 'metricSvg', status: status %}
-  </div>
-</div>
-{% endtemplate %}
-
-{% template metricSvg %}
-<svg viewBox="0 0 32 54">
-  {% for i in (1..5) %}
-    {% assign state = 6 | minus: i %}
-    <rect
-      x="0"
-      y="{{ i | times: 9 }}"
-      width="32"
-      height="7"
-      rx="5"
-      fill="{% if state == status %}black{% else %}darkGrey{% endif %}"
-    />
-  {% endfor %}
-</svg>
+{% template status_badge %}
+  {% if status == 1 %}
+    <span class="label label--filled">Low</span>
+  {% elsif status == 2 %}
+    <span class="label label--outline">Low</span>
+  {% elsif status == 4 %}
+    <span class="label label--outline">High</span>
+  {% elsif status == 5 %}
+    <span class="label label--filled">High</span>
+  {% else %}
+    <span class="label">OK</span>
+  {% endif %}
 {% endtemplate %}
 
 <div class="view view--full">
-  <div class="layout">
-    <div class="grid gap-large">
-      {% for flower in plants %}
-        <div class="col content">
-          <span class="title text--white bg--gray-2 pl--2 px--1 mb--2">{{ flower.nickname }}</span>
-          <div class="grid">
-            <div>
-              <img
-                class="image-dither w--14"
-                src="{{ flower.plant_thumb_path }}"
-                alt="{{ flower.name }}"
-                style="aspect-ratio: 1/1; object-fit: cover; border-radius: 1em; filter: grayscale(100%); vertical-align: top"
-              >
-              {% if flower.moisture_status != 3 or flower.light_status != 3 or flower.temperature_status != 3 %}
-                <span
-                  class="text--center bg--gray-6 mt--4"
-                  style="display: block; filter: grayscale(100%); font-size: 3em"
-                  >⚠️</span
-                >
-              {% endif %}
-            </div>
-            {% render 'metric', status: flower.moisture_status, icon: '💧' %}
-            {% render 'metric', status: flower.light_status, icon: '☀️' %}
-            {% render 'metric', status: flower.temperature_status, icon: '🌡' %}
-          </div>
+  <div class="layout layout--col gap--large">
+    <div class="grid grid--cols-3 gap--medium">
+      {% for plant in plants %}
+        <div class="col col--center">
+          <img
+            class="image image-dither image--cover rounded--medium w--full h--32"
+            src="{{ plant.thumb_path }}"
+            alt="{{ plant.nickname }}"
+          >
+          <span class="title mt--1" data-clamp="1">{{ plant.nickname }}</span>
+          <span class="label label--gray" data-clamp="1">{{ plant.scientific_name }}</span>
         </div>
       {% endfor %}
     </div>
+
+    <table class="table" data-table-limit="true">
+      <thead>
+        <tr>
+          <th><span class="title">Plant</span></th>
+          <th><span class="title">Water</span></th>
+          <th><span class="title">Light</span></th>
+          <th><span class="title">Temp</span></th>
+          <th><span class="title">Salt</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for plant in plants %}
+          <tr>
+            <td><span class="label" data-clamp="1">{{ plant.nickname }}</span></td>
+            <td>{% render 'status_badge', status: plant.moisture_status %}</td>
+            <td>{% render 'status_badge', status: plant.light_status %}</td>
+            <td>{% render 'status_badge', status: plant.temperature_status %}</td>
+            <td>{% render 'status_badge', status: plant.salinity_status %}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
   <div class="title_bar">
     <span class="title">FYTA Plants</span>

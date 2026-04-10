@@ -3,6 +3,22 @@ import type { FytaUserPlantsResponse } from "./fytaTypes.js";
 
 const accessToken = process.env.FYTA_API_TOKEN;
 
+export async function fetchPlantImage(imageUrl: string): Promise<Response> {
+  const response = await fetch(imageUrl, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch image: ${response.status} ${response.statusText}`,
+    );
+  }
+
+  return response;
+}
+
 export async function fetchPlants(): Promise<FytaUserPlantsResponse> {
   const response = await fetch("https://web.fyta.de/api/user-plant", {
     headers: {

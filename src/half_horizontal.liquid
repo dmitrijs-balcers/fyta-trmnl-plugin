@@ -1,1 +1,43 @@
-half horizontal!
+{% template status_badge %}
+  {% if status == 1 %}
+    <span class="label label--small label--filled">Low</span>
+  {% elsif status == 2 %}
+    <span class="label label--small label--outline">Low</span>
+  {% elsif status == 4 %}
+    <span class="label label--small label--outline">High</span>
+  {% elsif status == 5 %}
+    <span class="label label--small label--filled">High</span>
+  {% else %}
+    <span class="label label--small">OK</span>
+  {% endif %}
+{% endtemplate %}
+
+<div class="view view--half_horizontal">
+  <div class="layout">
+    <table class="table table--small" data-table-limit="true">
+      <thead>
+        <tr>
+          <th><span class="title title--small">Plant</span></th>
+          <th><span class="title title--small">Water</span></th>
+          <th><span class="title title--small">Light</span></th>
+          <th><span class="title title--small">Temp</span></th>
+          <th><span class="title title--small">Salt</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for plant in plants %}
+          <tr>
+            <td><span class="label" data-clamp="1">{{ plant.nickname }}</span></td>
+            <td>{% render 'status_badge', status: plant.moisture_status %}</td>
+            <td>{% render 'status_badge', status: plant.light_status %}</td>
+            <td>{% render 'status_badge', status: plant.temperature_status %}</td>
+            <td>{% render 'status_badge', status: plant.salinity_status %}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="title_bar">
+    <span class="title">FYTA Plants</span>
+  </div>
+</div>
