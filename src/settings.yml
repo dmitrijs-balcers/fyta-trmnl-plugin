@@ -8,6 +8,7 @@ strategy: polling
 no_screen_padding: "no"
 dark_mode: "no"
 static_data: ""
+framework_version: 3.0.3
 polling_verb: get
 polling_url: "https://fyta-trmnl-plugin.onrender.com/"
 polling_headers: ""
