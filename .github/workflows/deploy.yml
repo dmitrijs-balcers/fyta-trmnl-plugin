@@ -12,9 +12,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4"
+
       - name: Install trmnlp
         run: gem install trmnl_preview
+
+      - name: Configure trmnlp
+        run: |
+          mkdir -p ~/.config/trmnlp
+          cat > ~/.config/trmnlp/config.yml << EOF
+          ---
+          api_key: ${{ secrets.TRMNL_API_KEY }}
+          EOF
+
       - name: Push to TRMNL
-        env:
-          TRMNL_API_KEY: ${{ secrets.TRMNL_API_KEY }}
-        run: trmnlp push --force --id 9f7971b0-25f1-4d75-b28f-64615607f2e3
+        run: trmnlp push --force

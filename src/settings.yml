@@ -11,5 +11,6 @@ static_data: ""
 polling_verb: get
 polling_url: "http://host.docker.internal:3000"
 polling_headers: ""
+id: 91420
 name: My Plugin
 refresh_interval: 1440
